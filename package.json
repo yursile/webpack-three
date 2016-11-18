@@ -39,6 +39,7 @@
     "postcss-loader": "^0.10.1",
     "px2rem-loader": "^0.1.7",
     "style-loader": "^0.13.1",
+    "three.js": "^0.77.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.9",
     "yu-spritesmith": "0.0.2"

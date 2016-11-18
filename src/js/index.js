@@ -1,45 +1,54 @@
-import "../css/index.less"
-/**
- * $jquery是通过CDN载入的，在webpack中配置了externals后，依然可以在这里引入
- */
-import $ from "jquery"
+import THREE from "three.js"
 
-/**
- * 可以加载html
- */
-import template from "../view/testTemplate.html"
+import OrbitControls from "./libs/OrbitControls.js"
 
-/**
- * 加载图片
- * 这个图片小于8k，
- * 会转成base64码
- */
-import vcode from "../img/vcode.jpg"
+import img from "../img/A01.jpg"
 
-/**
- * 引入pixi测试类
- */
-import PIXITest from "./PIXITest.js"
+var camera;
 
-// 反引号里可以用${}取js变量
-// 
-var style = {
-	position:"absolute",
-	top:"50px",
-	right:"0"
+var scene, renderer;
+var geometry, material, mesh;
+
+
+
+init();
+animate();
+
+function init() {
+
+    scene = new THREE.Scene();
+
+   window.camera =  camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+    camera.position.z = 1000;
+
+
+	var geometry = new THREE.CylinderGeometry( 500, 500, 200, 32 );
+	var material = new THREE.MeshBasicMaterial( {color: 0xffff00,map: THREE.ImageUtils.loadTexture(img)} );
+	mesh = new THREE.Mesh( geometry, material );
+	scene.add( mesh );
+
+    // geometry = new THREE.BoxGeometry( 200, 200, 200 );
+    // material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+
+    // mesh = new THREE.Mesh( geometry, material );
+    // scene.add( mesh );
+
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
+	var conl  = new THREE.OrbitControls(camera);
+
+    document.body.appendChild( renderer.domElement );
+
 }
 
-var test = new PIXITest();
+function animate() {
 
-$("#main").append(template);
+    requestAnimationFrame( animate );
 
-$("#main").append(`<img id='click' src=${vcode} style=position:${style.position};top:${style.top};right:${style.right} />`)
+    // mesh.rotation.z += 0.01;
+    // mesh.rotation.y += 0.02;
 
-function showCanvas(){
-	$("#cvsContainer").show();
+    renderer.render( scene, camera );
+
 }
-
-$("#click").on("click",showCanvas)
-
-
-
